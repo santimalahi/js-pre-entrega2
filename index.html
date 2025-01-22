@@ -4,10 +4,52 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>GuitarCenter</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   </head>
   <body>
-    <h1>Tienda de Guitarras Eléctricas Guitar Center</h1>
-    <p>Abrí la consola para ver los resultados</p>
+    <header>
+      <a href="">
+          <h1>CdG</h1>
+      </a>
+      <nav>
+          <ul>
+              <li><a href="">Fender</a></li>
+              <li><a href="">Gibson</a></li>
+              <li><a href="">Varios</a></li>
+              <li><a href="" >Ofertas</a></li>
+              <li><a href="">Contacto</a></li>
+          </ul>
+
+      </nav>
+      
+  </header>
+  <main>
+          <button id="izq">izquierda</button>
+          <button id="der">derecha</button>
+          <button id="todas">ver todas</button>
+            
+
+          
+            <input type="text" id="buscador">
+            <button id="buscar">buscar</button>
+            <button id="limpiar">limpiar</button>
+            <div id="resultadosFinales">
+            <ul id="listaGuitarras">
+              
+            </ul>
+            </div>
+          
+      </section>
+
+      
+
+
+
+
+  </main>
+  <footer>
+
+  </footer>
     <script src="main.js"></script>
   </body>
 </html>
