@@ -43,9 +43,20 @@ const guitarras = [
 // ver guitarras:
 
 function mostrarGuitarras(guitarras) {
-  guitarras.forEach((v) => {
-    console.log(`${v.marca} ${v.modelo} ${v.color} ${v.anio} \n$${v.precio}`);
-  })
+  guitarras.forEach((guitarra) => {
+    const li = document.createElement('li');
+    li.textContent = `${guitarra.marca} ${guitarra.modelo} - Precio: ${guitarra.precio} ARS`;
+    li.style.margin = '20px';
+    resultados.appendChild(li);
+  
+    const btnComprar = document.createElement('button');
+    btnComprar.textContent = `comprar`;
+    btnComprar.className = 'comprar';
+    btnComprar.setAttribute('data-marca', guitarra.marca);
+    btnComprar.setAttribute('data-modelo', guitarra.modelo);
+    resultados.appendChild(btnComprar);
+  });
+  
 }
 
 
@@ -72,11 +83,17 @@ function realizarBusqueda() {
       const li = document.createElement('li');
       li.textContent = `${guitarra.marca} ${guitarra.modelo} - Precio: ${guitarra.precio} ARS`;
       li.style.margin = '20px'
+      
       resultados.appendChild(li);
+
 
       btnComprar = document.createElement('button')
       btnComprar.textContent = `comprar`;
       btnComprar.className = 'comprar'
+      btnComprar.setAttribute('data-marca', guitarra.marca);
+      btnComprar.setAttribute('data-modelo', guitarra.modelo);
+      
+      
       resultados.appendChild(btnComprar)
     }
     // else{
@@ -106,12 +123,81 @@ limpiarBusqueda.addEventListener("click", () => {
 
 resultados.addEventListener("click", (event) => {
   if (event.target && event.target.classList.contains('comprar')) {
-    prompt("ingresa tus datos:");
+    Swal.fire({
+      title: "Agregado al carrito!",
+      text: "Podes llevarlo cuando quieras",
+      icon: "success"
+    });
   }})
 
 
+// agregar al carrito
 
 
+const carrito = []
+
+localStorage.setItem('carrito', JSON.stringify(carrito));
+
+function agregarAlCarrito(guitarraBuscada) {
+  
+  carrito.push(guitarraBuscada);
+
+  console.log('Guitarra agregada al carrito:', guitarraBuscada);
+  console.log('Carrito de compras:', carrito);
+}
+
+const botonesComprar = document.querySelectorAll('.comprar');
+
+
+
+  botonesComprar.forEach(btnComprar => {
+    btnComprar.addEventListener('click', (    ) => {
+      
+      const marca = btnComprar.getAttribute('data-marca');
+      const modelo = btnComprar.getAttribute('data-modelo');
+      
+
+
+      const guitarraBuscada = guitarras.find(guitarra => guitarra.marca == marca && guitarra.modelo == modelo);
+      console.log(guitarraBuscada)
+      
+      if (guitarraBuscada) {
+        agregarAlCarrito(guitarraBuscada);
+      }
+    });
+  })
+
+
+
+
+const apiURL = 'https://pokeapi.co/api/v2/pokemon/ditto'
+
+const contenedor = document.getElementById('api-recomendado');
+
+  fetch(apiURL)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Error en la solicitud: ' + response.statusText);
+      }
+      return response.json();
+    })
+    .then(data => {
+      console.log('Datos recibidos:', data);
+
+      const pokemonElement = document.createElement('div');
+      pokemonElement.innerHTML = `
+        <img src="${data.sprites.front_default}" alt="Imagen de ${data.name}">
+        <h3>Nombre: ${data.name}</h3>
+        <p>Altura: ${data.height}</p>
+        <p>Peso: ${data.weight}</p>
+        <p>Tipo: ${data.types.map(typeInfo => typeInfo.type.name).join(', ')}</p>
+      `;
+      contenedor.appendChild(pokemonElement);
+    })
+    .catch(error => {
+      console.error('Error al obtener los datos:', error);})
+
+      contenedor.style.marginTop = '300px';
 
 
 
@@ -149,35 +235,3 @@ function filtrarPorPrecio(precioMax) {
 
 
 
-
-
-// function mostrarMenu() {
-//   let opcion;
-
-//   do {
-//     opcion = prompt(
-//       "Bienvenido a GuitarCenter. Ingrese una opción: \n\n1 - Mostrar guitarras disponibles\n2 - Buscar por marca\n3 - Filtrar por precio\n4 - Salir\n\n(Abra la consola para ver los resultados)"
-//     );
-//     switch (opcion) {
-//       case "1":
-//         mostrarGuitarras(guitarras);
-//         break;
-//       case "2":
-//         const marcaUsuario = prompt("¿Qué marca desea buscar?");
-//         filtrarPorMarca(marcaUsuario);
-//         break;
-//       case "3":
-//         const precioMax = parseInt(prompt("Ingrese el precio máximo"));
-//         filtrarPorPrecio(precioMax);
-//         break;
-//       case "4":
-//         alert("Gracias por visitarnos :)");
-//         break;
-//       default:
-//         alert("Opción incorrecta");
-//         break;
-//     }
-//   } while (opcion !== "4");
-// }
-
-// mostrarMenu();
